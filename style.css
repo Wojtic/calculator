@@ -1,0 +1,21 @@
+.abc_obal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.abc {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.sloupek {
+  width: 1.5rem;
+}
+
+.sloupek input {
+  width: 0.8rem;
+}
