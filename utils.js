@@ -16,5 +16,3 @@ function n_do_deset(cislo, soustava, abc) {
   }
   return vysledek * sign;
 }
-
-console.log(n_do_deset("101.5", 2, ABECEDA));
