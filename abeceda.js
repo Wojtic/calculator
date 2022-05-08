@@ -1,9 +1,3 @@
-const abc_input = document.querySelector(".abc_nastaveni_vstup");
-const abc_tlacitko = document.querySelector(".abc_generate");
-const vstupy = document.querySelectorAll(".abc input");
-
-const zakazaneRgx = /\.|\,|\-|\+|\-|\*|\/|\(|\)/;
-
 function setup_abc() {
   ABECEDA = [];
   switch (abc_input.value) {
@@ -49,8 +43,6 @@ function setup_abc() {
   }
   vypln_abc(ABECEDA);
 }
-abc_tlacitko.onclick = setup_abc;
-setup_abc();
 
 function vypln_abc(abc) {
   for (let i = 0; i < vstupy.length; i++) {
@@ -58,18 +50,20 @@ function vypln_abc(abc) {
   }
 }
 
-vstupy.forEach((el) =>
-  el.addEventListener("input", (event) => {
-    let cislo = event.target.getAttribute("id").split("_")[1];
-    if (event.target.value != "") {
-      if (
-        !ABECEDA.includes(event.target.value) &&
-        !event.target.value.match(zakazaneRgx)
-      ) {
-        ABECEDA[cislo] = event.target.value;
-      } else {
-        event.target.value = "";
+function setupVstupyEventListenery() {
+  vstupy.forEach((el) =>
+    el.addEventListener("input", (event) => {
+      let cislo = event.target.getAttribute("id").split("_")[1];
+      if (event.target.value != "") {
+        if (
+          !ABECEDA.includes(event.target.value) &&
+          !event.target.value.match(zakazaneRgx)
+        ) {
+          ABECEDA[cislo] = event.target.value;
+        } else {
+          event.target.value = "";
+        }
       }
-    }
-  })
-);
+    })
+  );
+}
