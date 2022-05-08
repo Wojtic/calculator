@@ -17,11 +17,13 @@
       </div>
       <div class="abc"></div>
       <script>
-        let abc_dohromady = "";
-        for (let i = 0; i < 60; i++) {
-          abc_dohromady += `<div class="sloupek"><p id="paragraf_${i.toString()}">${i.toString()}</p><input maxlength="1" type="text" id="cislo_${i.toString()}" /></div>`;
-        }
-        document.querySelector(".abc").innerHTML = abc_dohromady;
+        (() => {
+          let abc_dohromady = "";
+          for (let i = 0; i < 60; i++) {
+            abc_dohromady += `<div class="sloupek"><p id="paragraf_${i.toString()}">${i.toString()}</p><input maxlength="1" type="text" id="cislo_${i.toString()}" /></div>`;
+          }
+          document.querySelector(".abc").innerHTML = abc_dohromady;
+        })(); // Uzavřeno do anonymní funkce, aby nevznikaly globální proměnné
       </script>
     </div>
     <div class="calculator">
