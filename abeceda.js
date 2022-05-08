@@ -2,6 +2,8 @@ const abc_input = document.querySelector(".abc_nastaveni_vstup");
 const abc_tlacitko = document.querySelector(".abc_generate");
 const vstupy = document.querySelectorAll(".abc input");
 
+const zakazaneRgx = /\.|\,|\-|\+|\-|\*|\/|\(|\)/;
+
 function setup_abc() {
   ABECEDA = [];
   switch (abc_input.value) {
@@ -28,7 +30,10 @@ function setup_abc() {
           return 0.5 - Math.random();
         })
         .join(""); // https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
-      ABECEDA = zamichane.split("").slice(0, 60);
+      ABECEDA = zamichane
+        .split("")
+        .filter((e) => !e.match(zakazaneRgx))
+        .slice(0, 60);
       break;
     default:
       for (let i = 0; i < 10; i++) {
@@ -57,7 +62,10 @@ vstupy.forEach((el) =>
   el.addEventListener("input", (event) => {
     let cislo = event.target.getAttribute("id").split("_")[1];
     if (event.target.value != "") {
-      if (!ABECEDA.includes(event.target.value)) {
+      if (
+        !ABECEDA.includes(event.target.value) &&
+        !event.target.value.match(zakazaneRgx)
+      ) {
         ABECEDA[cislo] = event.target.value;
       } else {
         event.target.value = "";
