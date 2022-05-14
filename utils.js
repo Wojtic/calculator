@@ -1,28 +1,17 @@
-const DESETINNAMISTA = 5;
+const DESETINNAMISTA = 15;
 
 function deset_do_n(cislo, soustava, abc) {
-  if (cislo != 0) {
-    var vysledek = "";
-    var exp = Math.floor(Math.log(cislo) / Math.log(soustava));
-    while (exp != -1) {
-      var koliksevejde = Math.floor(cislo / soustava ** exp);
-      cislo = cislo - koliksevejde * soustava ** exp;
-      vysledek += abc[koliksevejde];
-      exp--;
-    }
-    if (cislo != 0) {
-      vysledek += ",";
-      for (let i = 0; i < DESETINNAMISTA; i++) {
-        exp = -(i + 1);
-        var koliksevejde = Math.floor(cislo / soustava ** exp);
-        cislo = cislo - koliksevejde * soustava ** exp;
-        vysledek += abc[koliksevejde];
-      }
-    }
-    return vysledek;
-  } else {
-    return abc[0];
+  const minus = cislo < 0;
+  minus ? (cislo *= -1) : "";
+  let vysledek = cislo == 0 ? abc[0] : "";
+  let exp = Math.floor(Math.log(cislo) / Math.log(soustava));
+  while (exp > -1 - (cislo % 1 != 0) * DESETINNAMISTA) {
+    let koliksevejde = Math.floor(cislo / soustava ** exp);
+    cislo = cislo - koliksevejde * soustava ** exp;
+    vysledek += (exp == -1 ? "," : "") + abc[koliksevejde];
+    exp--;
   }
+  return (minus ? "-" : "") + vysledek;
 }
 
 function n_do_deset(cislo, soustava, abc) {
