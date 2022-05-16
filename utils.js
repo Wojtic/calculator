@@ -30,3 +30,38 @@ function n_do_deset(cislo, soustava, abc) {
   }
   return vysledek * sign;
 }
+
+function vyhodnot(vztah) {
+  if (vztah.includes("(")) {
+    const prvniZavorka = vztah.indexOf("(");
+    let otevreneZavorky = 1;
+    for (var i = prvniZavorka + 1; i < vztah.length; i++) {
+      if (vztah[i] == "(") {
+        otevreneZavorky++;
+      } else if (vztah[i] == ")") {
+        otevreneZavorky--;
+      }
+      if (otevreneZavorky == 0) {
+        break;
+      }
+    }
+    const zavorka = vyhodnot(vztah.slice(prvniZavorka + 1, i));
+    vztah.splice(prvniZavorka, i - prvniZavorka + 1, zavorka);
+    return vyhodnot(vztah);
+  }
+  while (vztah.includes("/")) {
+    const deleno = vztah.indexOf("/");
+    vztah[deleno] = "*";
+    vztah[deleno + 1] = vztah[deleno + 1] ** -1;
+  }
+  while (vztah.includes("*")) {
+    const krat = vztah.indexOf("*");
+    vztah.splice(krat - 1, 3, vztah[krat - 1] * vztah[krat + 1]);
+  }
+  while (vztah.includes("-")) {
+    const minus = vztah.indexOf("-");
+    vztah[minus] = "+";
+    vztah[minus + 1] *= -1;
+  }
+  return vztah.reduce((prev, curr) => (curr == "+" ? prev : prev + curr), 0);
+}
