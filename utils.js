@@ -65,3 +65,21 @@ function vyhodnot(vztah) {
   }
   return vztah.reduce((prev, curr) => (curr == "+" ? prev : prev + curr), 0);
 }
+
+function preved_priklad(priklad, abc, soustava) {
+  let vysledek = [];
+  let cislo = "";
+  for (let i = 0; i < priklad.length; i++) {
+    if (["+", "-", "*", "/", "(", ")"].includes(priklad[i])) {
+      if (cislo) {
+        vysledek.push(n_do_deset(cislo, soustava, abc));
+        cislo = "";
+      }
+      vysledek.push(priklad[i]);
+    } else {
+      cislo += priklad[i];
+    }
+  }
+  cislo ? vysledek.push(n_do_deset(cislo, soustava, abc)) : "";
+  return vysledek;
+} 
