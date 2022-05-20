@@ -30,7 +30,8 @@
       <div class="calculator_settings">
         <label for="calc_mode">Kalkulačka:</label>
         <select name="calc_mode" class="calc_mode_select">
-          <option value="random" selected>Náhodná</option>
+          <option value="nothing" selected>Žádná</option>
+          <option value="random">Náhodná</option>
           <option value="normal">Normální (trapná)</option>
         </select>
         <label for="soustava">Číselná soustava:</label>
@@ -45,6 +46,7 @@
         <input type="checkbox" name="check_42" class="check_42" checked />
         <label for="check_42">42</label>
       </div>
+      <div class="calculator_inside"></div>
     </div>
     <script src="./abeceda.js"></script>
     <script src="./index.js"></script>
