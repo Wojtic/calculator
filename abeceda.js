@@ -42,6 +42,7 @@ function setup_abc() {
       ABECEDA = ABECEDA.slice(0, 60);
   }
   vypln_abc(ABECEDA);
+  renderCalc();
 }
 
 function vypln_abc(abc) {
