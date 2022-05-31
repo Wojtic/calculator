@@ -37,15 +37,11 @@ setupVstupyEventListenery();
 // -------------------------------------------------------------------- kalkulačka obecné
 function renderCalc() {
   switch (kalkulacka) {
-    case "nothing":
-      kalkulacka_obal.innerHTML = "";
-      break;
     case "random":
       renderRandomCalc();
       break;
     case "normal":
       renderNormalCalc();
-      kalkulacka_obal.innerHTML = "normální";
       break;
     default:
       kalkulacka_obal.innerHTML = "";
@@ -94,5 +90,10 @@ function renderRandomCalc() {
   document.querySelector(".random_right").onclick = evaluateExpression;
 }
 // --------------------------------------------------------------------- normální kalkulačka
-
-function renderNormalCalc() {}
+function renderNormalCalc() {
+  let cisla = "";
+  for (let i = 0; i < SOUSTAVA; i++) {
+    cisla += `<button class="cislo" id="cislo${i}">${ABECEDA[i]}</button>`;
+  }
+  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
+}
