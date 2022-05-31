@@ -48,6 +48,24 @@ function renderCalc() {
       break;
   }
 }
+
+function evaluateExpression() {
+  priklad = priklad.slice(
+    0,
+    priklad.indexOf("=") == -1 ? priklad.length : priklad.indexOf("=")
+  );
+  const vysledek = vyhodnot(preved_priklad(priklad, ABECEDA, SOUSTAVA));
+  priklad +=
+    "=" +
+    (MODE42
+      ? deset_do_n(42, SOUSTAVA, ABECEDA) +
+        "*" +
+        deset_do_n(Math.floor(vysledek / 42), SOUSTAVA, ABECEDA) +
+        "+" +
+        deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
+      : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel a násobků 42 se chová zvláštně
+  return priklad;
+}
 // --------------------------------------------------------------------- náhodná kalkulačka
 function renderRandomCalc() {
   kalkulacka_obal.innerHTML =
@@ -58,8 +76,6 @@ function renderRandomCalc() {
     let cislo1 = Math.floor(Math.random() * CISLOMAXHODNOTA);
     let cislo2 = Math.floor(Math.random() * CISLOMAXHODNOTA);
 
-    evaluated = false;
-
     priklad =
       deset_do_n(cislo1, SOUSTAVA, ABECEDA) +
       ["+", "-", "*", "/"][Math.floor(Math.random() * 4)] +
@@ -68,26 +84,12 @@ function renderRandomCalc() {
     p_priklad.innerHTML = priklad;
   }
 
-  function evaluateExpression() {
-    priklad = priklad.slice(0, priklad.indexOf("="));
-    const vysledek = vyhodnot(preved_priklad(priklad, ABECEDA, SOUSTAVA));
-    priklad +=
-      "=" +
-      (MODE42
-        ? deset_do_n(42, SOUSTAVA, ABECEDA) +
-          "*" +
-          deset_do_n(Math.floor(vysledek / 42), SOUSTAVA, ABECEDA) +
-          "+" +
-          deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
-        : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel a násobků 42 se chová zvláštně
-    p_priklad.innerHTML = priklad;
-  }
-
   priklad != "" ? (p_priklad.innerHTML = priklad) : changeExpression();
-  priklad.includes("=") ? evaluateExpression() : "";
+  priklad.includes("=") ? (p_priklad.innerHTML = evaluateExpression()) : ""; // Přepočítá po např. změně soustavy
 
   document.querySelector(".random_wrong").onclick = changeExpression;
-  document.querySelector(".random_right").onclick = evaluateExpression;
+  document.querySelector(".random_right").onclick = () =>
+    (p_priklad.innerHTML = evaluateExpression());
 }
 // --------------------------------------------------------------------- normální kalkulačka
 function renderNormalCalc() {
@@ -96,4 +98,52 @@ function renderNormalCalc() {
     cisla += `<button class="cislo" id="cislo${i}">${ABECEDA[i]}</button>`;
   }
   kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
+
+  const priklad_screen = document.querySelector(".screen");
+  priklad_screen.innerHTML = priklad;
+
+  const cisla_divy = document.querySelectorAll(".cislo");
+  cisla_divy.forEach((el) => {
+    el.addEventListener("click", (event) => {
+      priklad.includes("=")
+        ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+        : "";
+      priklad += ABECEDA[event.target.id.slice(5)];
+      priklad_screen.innerHTML = priklad;
+    });
+  });
+
+  priklad.includes("=")
+    ? (priklad_screen.innerHTML = evaluateExpression())
+    : ""; // Přepočítá po např. změně soustavy
+
+  const zmen_priklad = (znak) => {
+    // logika pro nahrazování znamének (např. na začátku nesmí být +*/)
+    if (priklad.length == 0 && znak == "-") {
+      priklad = "-";
+    } else if (
+      priklad.length > 1 ||
+      (!"+-*/".includes(priklad[0]) && priklad.length != 0)
+    ) {
+      "+-*/".includes(priklad[priklad.length - 1])
+        ? (priklad = priklad.slice(0, -1) + znak)
+        : (priklad += znak);
+    }
+    priklad_screen.innerHTML = priklad;
+  };
+  document.querySelector(".znamenko_minus").onclick = () => zmen_priklad("-");
+  document.querySelector(".znamenko_plus").onclick = () => zmen_priklad("+");
+  document.querySelector(".znamenko_krat").onclick = () => zmen_priklad("*");
+  document.querySelector(".znamenko_deleno").onclick = () => zmen_priklad("/");
+  document.querySelector(".znamenko_zavorka_leva").onclick = () => {
+    priklad += "(";
+    priklad_screen.innerHTML = priklad;
+  };
+  document.querySelector(".znamenko_zavorka_prava").onclick = () => {
+    priklad += ")";
+    priklad_screen.innerHTML = priklad;
+  };
+
+  document.querySelector(".znamenko_rovnase").onclick = () =>
+    (priklad_screen.innerHTML = evaluateExpression());
 }
