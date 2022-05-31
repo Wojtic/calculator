@@ -119,6 +119,9 @@ function renderNormalCalc() {
 
   const zmen_priklad = (znak) => {
     // logika pro nahrazování znamének (např. na začátku nesmí být +*/)
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
     if (priklad.length == 0 && znak == "-") {
       priklad = "-";
     } else if (
