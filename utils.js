@@ -11,7 +11,7 @@ function deset_do_n(cislo, soustava, abc) {
     vysledek += (exp == -1 ? "," : "") + abc[koliksevejde];
     exp--;
   }
-  return (minus ? "-" : "") + vysledek;
+  return (minus ? "-" : "") + (vysledek[0] == "," ? "0" : "") + vysledek;
 }
 
 function n_do_deset(cislo, soustava, abc) {
@@ -82,4 +82,4 @@ function preved_priklad(priklad, abc, soustava) {
   }
   cislo ? vysledek.push(n_do_deset(cislo, soustava, abc)) : "";
   return vysledek;
-} 
+}
