@@ -61,6 +61,7 @@ function setupVstupyEventListenery() {
           !event.target.value.match(zakazaneRgx)
         ) {
           ABECEDA[cislo] = event.target.value;
+          renderCalc();
         } else {
           event.target.value = "";
         }
