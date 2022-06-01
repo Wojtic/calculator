@@ -134,40 +134,72 @@ function renderNormalCalc() {
     }
     priklad_screen.innerHTML = priklad;
   };
+  const zmackl_zavorka = (zavorka) => {
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
+    priklad += zavorka;
+    priklad_screen.innerHTML = priklad;
+  };
   document.querySelector(".znamenko_minus").onclick = () => zmen_priklad("-");
   document.querySelector(".znamenko_plus").onclick = () => zmen_priklad("+");
   document.querySelector(".znamenko_krat").onclick = () => zmen_priklad("*");
   document.querySelector(".znamenko_deleno").onclick = () => zmen_priklad("/");
-  document.querySelector(".znamenko_zavorka_leva").onclick = () => {
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
-    priklad += "(";
-    priklad_screen.innerHTML = priklad;
-  };
-  document.querySelector(".znamenko_zavorka_prava").onclick = () => {
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
-    priklad += ")";
-    priklad_screen.innerHTML = priklad;
-  };
-
+  document.querySelector(".znamenko_zavorka_leva").onclick = () =>
+    zmackl_zavorka("(");
+  document.querySelector(".znamenko_zavorka_prava").onclick = () =>
+    zmackl_zavorka(")");
   document.querySelector(".znamenko_rovnase").onclick = () =>
     (priklad_screen.innerHTML = evaluateExpression());
   document.querySelector(".znamenko_C").onclick = () => {
     priklad = "";
     priklad_screen.innerHTML = priklad;
   };
-  document.querySelector(".znamenko_carka").onclick = () => {
+  const zmackl_carka = () => {
     priklad.includes("=")
       ? (priklad = priklad.slice(0, priklad.indexOf("=")))
       : "";
-    if (priklad.length > 0 && !"+-*/".includes(priklad[priklad.length - 1])) {
+    if (priklad.length > 0 && !"+-*/.,".includes(priklad[priklad.length - 1])) {
       priklad += ",";
     } else if (priklad.length > 0) {
       priklad = priklad.slice(0, -1) + ",";
     }
     priklad_screen.innerHTML = priklad;
   };
+  document.querySelector(".znamenko_carka").onclick = zmackl_carka;
+
+  document.addEventListener("keydown", (event) => {
+    switch (event.code) {
+      case "NumpadAdd":
+        zmen_priklad("+");
+        break;
+      case "NumpadSubtract":
+        zmen_priklad("-");
+        break;
+      case "NumpadMultiply":
+        zmen_priklad("*");
+        break;
+      case "NumpadDivide":
+        zmen_priklad("/");
+        break;
+      case "Enter":
+      case "NumpadEnter":
+        priklad_screen.innerHTML = evaluateExpression();
+        break;
+      case "Comma":
+      case "Period":
+      case "NumpadDecimal":
+        zmackl_carka();
+        break;
+      default:
+        if ("0123456789".includes(event.code[6])) {
+          priklad.includes("=")
+            ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+            : "";
+          priklad += ABECEDA[event.code[6]];
+          priklad_screen.innerHTML = priklad;
+        }
+        break;
+    }
+  });
 }
