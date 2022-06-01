@@ -29,7 +29,7 @@ kalkulacka_vyber.onchange = () => {
   renderCalc();
 };
 // -------------------------------------------------------------------- abeceda
-const zakazaneRgx = /\.|\,|\-|\+|\-|\*|\/|\(|\)/;
+const zakazaneRgx = /\.|\,|\-|\+|\-|\*|\/|\(|\)|\=/;
 
 abc_tlacitko.onclick = setup_abc;
 setup_abc();
