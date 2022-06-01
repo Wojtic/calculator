@@ -19,3 +19,45 @@
 .sloupek input {
   width: 0.8rem;
 }
+
+.calculator_normal {
+  display: grid;
+  grid-template-columns: 12rem 4rem;
+  grid-template-rows: 4rem 4rem auto;
+}
+
+.screen {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.znamenka_vodorovne {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.znamenka_svisle {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.cisla {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.calculator_normal button {
+  width: 3.8rem;
+  height: 3.8rem;
+  margin: 0.1rem;
+  padding: 0;
+  float: left;
+}
