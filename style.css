@@ -31,6 +31,9 @@
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+  text-align: center;
+  line-height: 4rem;
+  font-size: 1.5rem;
 }
 
 .znamenka_vodorovne {
@@ -60,4 +63,5 @@
   margin: 0.1rem;
   padding: 0;
   float: left;
+  font-size: 1.5rem;
 }
