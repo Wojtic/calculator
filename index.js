@@ -97,7 +97,7 @@ function renderNormalCalc() {
   for (let i = 0; i < SOUSTAVA; i++) {
     cisla += `<button class="cislo" id="cislo${i}">${ABECEDA[i]}</button>`;
   }
-  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
+  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_carka">,</button><button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
 
   const priklad_screen = document.querySelector(".screen");
   priklad_screen.innerHTML = priklad;
@@ -126,9 +126,9 @@ function renderNormalCalc() {
       priklad = "-";
     } else if (
       priklad.length > 1 ||
-      (!"+-*/".includes(priklad[0]) && priklad.length != 0)
+      (!"+-*/,.".includes(priklad[0]) && priklad.length != 0)
     ) {
-      "+-*/".includes(priklad[priklad.length - 1])
+      "+-*/,.".includes(priklad[priklad.length - 1])
         ? (priklad = priklad.slice(0, -1) + znak)
         : (priklad += znak);
     }
@@ -151,6 +151,17 @@ function renderNormalCalc() {
     (priklad_screen.innerHTML = evaluateExpression());
   document.querySelector(".znamenko_C").onclick = () => {
     priklad = "";
+    priklad_screen.innerHTML = priklad;
+  };
+  document.querySelector(".znamenko_carka").onclick = () => {
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
+    if (priklad.length > 0 && !"+-*/".includes(priklad[priklad.length - 1])) {
+      priklad += ",";
+    } else if (priklad.length > 0) {
+      priklad = priklad.slice(0, -1) + ",";
+    }
     priklad_screen.innerHTML = priklad;
   };
 }
