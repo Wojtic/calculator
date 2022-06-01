@@ -139,10 +139,16 @@ function renderNormalCalc() {
   document.querySelector(".znamenko_krat").onclick = () => zmen_priklad("*");
   document.querySelector(".znamenko_deleno").onclick = () => zmen_priklad("/");
   document.querySelector(".znamenko_zavorka_leva").onclick = () => {
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
     priklad += "(";
     priklad_screen.innerHTML = priklad;
   };
   document.querySelector(".znamenko_zavorka_prava").onclick = () => {
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
     priklad += ")";
     priklad_screen.innerHTML = priklad;
   };
