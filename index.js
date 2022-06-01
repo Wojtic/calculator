@@ -169,6 +169,9 @@ function renderNormalCalc() {
   document.querySelector(".znamenko_carka").onclick = zmackl_carka;
 
   document.addEventListener("keydown", (event) => {
+    if (kalkulacka != "normal") {
+      return;
+    }
     switch (event.code) {
       case "NumpadAdd":
         zmen_priklad("+");
