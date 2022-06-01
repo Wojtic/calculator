@@ -63,7 +63,7 @@ function evaluateExpression() {
         deset_do_n(Math.floor(vysledek / 42), SOUSTAVA, ABECEDA) +
         "+" +
         deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
-      : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel a násobků 42 se chová zvláštně
+      : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel se chová zvláštně
   return priklad;
 }
 // --------------------------------------------------------------------- náhodná kalkulačka
@@ -97,7 +97,7 @@ function renderNormalCalc() {
   for (let i = 0; i < SOUSTAVA; i++) {
     cisla += `<button class="cislo" id="cislo${i}">${ABECEDA[i]}</button>`;
   }
-  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
+  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen"></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
 
   const priklad_screen = document.querySelector(".screen");
   priklad_screen.innerHTML = priklad;
@@ -149,4 +149,8 @@ function renderNormalCalc() {
 
   document.querySelector(".znamenko_rovnase").onclick = () =>
     (priklad_screen.innerHTML = evaluateExpression());
+  document.querySelector(".znamenko_C").onclick = () => {
+    priklad = "";
+    priklad_screen.innerHTML = priklad;
+  };
 }
