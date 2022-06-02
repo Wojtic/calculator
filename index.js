@@ -55,12 +55,14 @@ function evaluateExpression() {
     priklad.indexOf("=") == -1 ? priklad.length : priklad.indexOf("=")
   );
   const vysledek = vyhodnot(preved_priklad(priklad, ABECEDA, SOUSTAVA));
+  const nasobek42 =
+    vysledek < 0 ? Math.ceil(vysledek / 42) : Math.floor(vysledek / 42);
   priklad +=
     "=" +
     (MODE42
       ? deset_do_n(42, SOUSTAVA, ABECEDA) +
         "*" +
-        deset_do_n(Math.floor(vysledek / 42), SOUSTAVA, ABECEDA) +
+        deset_do_n(nasobek42, SOUSTAVA, ABECEDA) +
         "+" +
         deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
       : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel se chová zvláštně
