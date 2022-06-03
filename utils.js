@@ -4,7 +4,7 @@ function deset_do_n(cislo, soustava, abc) {
   const minus = cislo < 0;
   minus ? (cislo *= -1) : "";
   let vysledek = cislo == 0 ? abc[0] : "";
-  let exp = Math.max(Math.floor(Math.log(cislo) / Math.log(soustava)), 0);
+  let exp = Math.max(Math.floor(Math.log(cislo) / Math.log(soustava)), -1);
   while (exp > -1 - (cislo % 1 != 0) * DESETINNAMISTA) {
     let koliksevejde = Math.floor(cislo / soustava ** exp);
     cislo = cislo - koliksevejde * soustava ** exp;
