@@ -101,10 +101,10 @@ function renderNormalCalc() {
     cisla += `<button class="cislo ${
       lastSOUSTAVA < SOUSTAVA
         ? i + 1 > lastSOUSTAVA
-          ? "animate__animated animate__slideInDown"
+          ? "animate__animated animate__bounceInDown"
           : ""
         : i + 1 > SOUSTAVA
-        ? "animate__animated animate__slideOutDown"
+        ? "animate__animated animate__bounceOutDown"
         : ""
     }" id="cislo${i}">${ABECEDA[i]}</button>`;
   } // Dříve byl tento kód čitelný, teď má animace
