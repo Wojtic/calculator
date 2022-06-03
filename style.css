@@ -24,6 +24,8 @@
   display: grid;
   grid-template-columns: 12rem 4rem;
   grid-template-rows: 4rem 4rem auto;
+  margin: 0 auto;
+  width: 16rem;
 }
 
 .screen {
@@ -34,6 +36,7 @@
   text-align: center;
   line-height: 4rem;
   font-size: 1.5rem;
+  white-space: nowrap;
 }
 
 .znamenka_vodorovne {
