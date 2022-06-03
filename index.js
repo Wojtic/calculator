@@ -8,6 +8,7 @@ const abc_tlacitko = document.querySelector(".abc_generate");
 const vstupy = document.querySelectorAll(".abc input");
 const kalkulacka_obal = document.querySelector(".calculator_inside");
 // ---------------------------------------------------------------- obecné
+let lastSOUSTAVA = 0; // pro animace
 const CISLOMAXHODNOTA = 10000;
 let ABECEDA = [];
 let priklad = "";
@@ -96,9 +97,18 @@ function renderRandomCalc() {
 // --------------------------------------------------------------------- normální kalkulačka
 function renderNormalCalc() {
   let cisla = "";
-  for (let i = 0; i < SOUSTAVA; i++) {
-    cisla += `<button class="cislo" id="cislo${i}">${ABECEDA[i]}</button>`;
-  }
+  for (let i = 0; i < Math.max(lastSOUSTAVA, SOUSTAVA); i++) {
+    cisla += `<button class="cislo ${
+      lastSOUSTAVA < SOUSTAVA
+        ? i + 1 > lastSOUSTAVA
+          ? "animate__animated animate__slideInDown"
+          : ""
+        : i + 1 > SOUSTAVA
+        ? "animate__animated animate__slideOutDown"
+        : ""
+    }" id="cislo${i}">${ABECEDA[i]}</button>`;
+  } // Dříve byl tento kód čitelný, teď má animace
+  lastSOUSTAVA = SOUSTAVA;
   kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen_obal"><p class="screen"></p></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_carka">,</button><button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
 
   const priklad_screen = document.querySelector(".screen");
@@ -115,9 +125,18 @@ function renderNormalCalc() {
     });
   });
 
-  priklad.includes("=")
-    ? (priklad_screen.innerHTML = evaluateExpression())
-    : ""; // Přepočítá po např. změně soustavy
+  const change_equation_with_anim = (zmena) => {
+    priklad_screen.innerHTML = zmena;
+    priklad_screen.classList.add("animate__animated", "animate__tada");
+    priklad_screen.addEventListener("animationend", () => {
+      priklad_screen.classList.remove("animate__animated", "animate__tada");
+    });
+  };
+
+  if (priklad.includes("=")) {
+    // přepočítá při napč. změně soustavy
+    change_equation_with_anim(evaluateExpression());
+  }
 
   const zmen_priklad = (znak) => {
     // logika pro nahrazování znamének (např. na začátku nesmí být +*/)
@@ -152,7 +171,7 @@ function renderNormalCalc() {
   document.querySelector(".znamenko_zavorka_prava").onclick = () =>
     zmackl_zavorka(")");
   document.querySelector(".znamenko_rovnase").onclick = () =>
-    (priklad_screen.innerHTML = evaluateExpression());
+    change_equation_with_anim(evaluateExpression());
   document.querySelector(".znamenko_C").onclick = () => {
     priklad = "";
     priklad_screen.innerHTML = priklad;
@@ -189,7 +208,7 @@ function renderNormalCalc() {
         break;
       case "Enter":
       case "NumpadEnter":
-        priklad_screen.innerHTML = evaluateExpression();
+        change_equation_with_anim(evaluateExpression());
         break;
       case "Comma":
       case "Period":
