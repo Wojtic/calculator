@@ -101,3 +101,31 @@
   box-shadow: none;
   background-color: rgb(90, 81, 68);
 }
+
+.nocalc {
+  height: 5rem;
+  width: 27rem;
+  background-color: rgb(161, 161, 161);
+  line-height: 5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 4rem;
+  border: 4px dotted black;
+  box-shadow: 5px 5px rgb(70, 70, 70);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40vh;
+  animation-name: spin;
+  animation-duration: 20000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -45,7 +45,7 @@ function renderCalc() {
       renderNormalCalc();
       break;
     default:
-      kalkulacka_obal.innerHTML = "";
+      kalkulacka_obal.innerHTML = `<div class="nocalc">Vyberte si nějakou kalkulačku.</div>`;
       break;
   }
 }
