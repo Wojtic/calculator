@@ -139,7 +139,7 @@ function renderNormalCalc() {
   }
 
   const zmen_priklad = (znak) => {
-    // logika pro nahrazování znamének (např. na začátku nesmí být +*/)
+    // logika pro nahrazování znamének (např. na začátku nesmí být +*/),.
     priklad.includes("=")
       ? (priklad = priklad.slice(0, priklad.indexOf("=")))
       : "";
@@ -193,6 +193,10 @@ function renderNormalCalc() {
     if (kalkulacka != "normal") {
       return;
     }
+    if (event.target.tagName.toLowerCase() == "input") {
+      return;
+    }
+
     switch (event.code) {
       case "NumpadAdd":
         zmen_priklad("+");
@@ -215,8 +219,18 @@ function renderNormalCalc() {
       case "NumpadDecimal":
         zmackl_carka();
         break;
+      case "Escape":
+      case "Delete":
+        priklad = "";
+        priklad_screen.innerHTML = priklad;
+      case "Backspace":
+        priklad = priklad.slice(0, -1);
+        priklad_screen.innerHTML = priklad;
       default:
         if ("0123456789".includes(event.code[6])) {
+          if (event.code[6] > SOUSTAVA - 1) {
+            break;
+          }
           priklad.includes("=")
             ? (priklad = priklad.slice(0, priklad.indexOf("=")))
             : "";
