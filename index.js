@@ -63,8 +63,10 @@ function evaluateExpression() {
     (MODE42
       ? deset_do_n(42, SOUSTAVA, ABECEDA) +
         "*" +
-        deset_do_n(nasobek42, SOUSTAVA, ABECEDA) +
-        "+" +
+        (deset_do_n(nasobek42, SOUSTAVA, ABECEDA) < 0
+          ? `(${deset_do_n(nasobek42, SOUSTAVA, ABECEDA)})`
+          : deset_do_n(nasobek42, SOUSTAVA, ABECEDA)) +
+        (vysledek % 42 > 0 ? "+" : "") +
         deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
       : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel se chová zvláštně
   return priklad;
