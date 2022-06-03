@@ -63,7 +63,7 @@ function evaluateExpression() {
     (MODE42
       ? deset_do_n(42, SOUSTAVA, ABECEDA) +
         "*" +
-        (deset_do_n(nasobek42, SOUSTAVA, ABECEDA) < 0
+        (nasobek42 < 0
           ? `(${deset_do_n(nasobek42, SOUSTAVA, ABECEDA)})`
           : deset_do_n(nasobek42, SOUSTAVA, ABECEDA)) +
         (vysledek % 42 > 0 ? "+" : "") +
