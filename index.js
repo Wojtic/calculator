@@ -11,6 +11,8 @@ const kalkulacka_obal = document.querySelector(".calculator_inside");
 let lastSOUSTAVA = 0; // pro animace
 let lastABECEDA = []; // pro přepisování příkladu při změně abecedy
 const CISLOMAXHODNOTA = 10000;
+const MAXLENGTH = 11; // maximální počet znaků na "obrazovce" normální kalkulačky, počítáno v šířkách znaku 2
+let scroll = 0; // O kolik posunout příklad v normální klakulačce
 let ABECEDA = [];
 let priklad = "";
 
@@ -117,7 +119,38 @@ function renderNormalCalc() {
   // ------------------------------------------------------------------------------- utils
 
   const priklad_screen = document.querySelector(".screen");
-  priklad_screen.innerHTML = priklad;
+
+  const set_screen = (text) => {
+    const kolik_uzkych_znaku = (text.match(/1|l|\+|\-|\*|\.|\,|\(|\)/g) || [])
+      .length; // 1,l,(,),+,-,*,,,.
+    if (text.length <= MAXLENGTH + kolik_uzkych_znaku / 2) {
+      priklad_screen.innerHTML = text;
+      scroll = 0;
+      return;
+    }
+    if (scroll > 0) {
+      priklad_screen.innerHTML =
+        `<span class="scroll" href="">←</span>` +
+        text.slice(scroll, MAXLENGTH + kolik_uzkych_znaku / 2 + scroll) +
+        (text.length > MAXLENGTH + kolik_uzkych_znaku / 2 + scroll
+          ? `<span class="scroll" href="">→</span>`
+          : "");
+    } else {
+      priklad_screen.innerHTML =
+        text.slice(0, MAXLENGTH + kolik_uzkych_znaku / 2) +
+        `<span class="scroll" href="">→</span>`;
+    }
+
+    document.querySelectorAll(".scroll").forEach(
+      (elem) =>
+        (elem.onclick = (e) => {
+          e.preventDefault(); // Aby odkaz nikam nešel
+          scroll += e.target.innerHTML == "←" ? -1 : 1;
+          renderCalc();
+        })
+    );
+  };
+  set_screen(priklad);
 
   const remove_equals = () => {
     if (priklad.includes("=")) priklad = priklad.slice(0, priklad.indexOf("="));
@@ -127,12 +160,12 @@ function renderNormalCalc() {
     el.addEventListener("click", (event) => {
       remove_equals();
       priklad += ABECEDA[event.target.id.slice(5)];
-      priklad_screen.innerHTML = priklad;
+      set_screen(priklad);
     });
   });
 
   const change_equation_with_anim = (zmena) => {
-    priklad_screen.innerHTML = zmena;
+    set_screen(zmena);
     priklad_screen.classList.add("animate__animated", "animate__tada");
     priklad_screen.addEventListener("animationend", () => {
       priklad_screen.classList.remove("animate__animated", "animate__tada");
@@ -151,7 +184,7 @@ function renderNormalCalc() {
           priklad.substring(i + 1);
       }
     }
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   }
   lastABECEDA = ABECEDA.slice(0); // Nemůžu napsat pouze = protože se objekt nezkopíruje ale jenom se na něj uloží "reference"
 
@@ -171,12 +204,12 @@ function renderNormalCalc() {
         ? (priklad = priklad.slice(0, -1) + znak)
         : (priklad += znak);
     }
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   };
   const zmackl_zavorka = (zavorka) => {
     remove_equals();
     priklad += zavorka;
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   };
   document.querySelector(".znamenko_minus").onclick = () => zmen_priklad("-");
   document.querySelector(".znamenko_plus").onclick = () => zmen_priklad("+");
@@ -190,19 +223,19 @@ function renderNormalCalc() {
     change_equation_with_anim(evaluateExpression());
   document.querySelector(".znamenko_C").onclick = () => {
     priklad = "";
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   };
   document.querySelector(".znamenko_Del").onclick = () => {
     remove_equals();
     priklad = priklad.slice(0, -1);
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   };
   const zmackl_carka = () => {
     remove_equals();
     if (priklad.length > 0 && !"+-*/.,".includes(priklad[priklad.length - 1]))
       priklad += ",";
     else if (priklad.length > 0) priklad = priklad.slice(0, -1) + ",";
-    priklad_screen.innerHTML = priklad;
+    set_screen(priklad);
   };
   document.querySelector(".znamenko_carka").onclick = zmackl_carka;
 
@@ -236,17 +269,17 @@ function renderNormalCalc() {
       case "Escape":
       case "Delete":
         priklad = "";
-        priklad_screen.innerHTML = priklad;
+        set_screen(priklad);
       case "Backspace":
         remove_equals();
         priklad = priklad.slice(0, -1);
-        priklad_screen.innerHTML = priklad;
+        set_screen(priklad);
       default:
         if ("0123456789".includes(event.code[6])) {
           if (event.code[6] > SOUSTAVA - 1) break;
           remove_equals();
           priklad += ABECEDA[event.code[6]];
-          priklad_screen.innerHTML = priklad;
+          set_screen(priklad);
         }
         break;
     }

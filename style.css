@@ -102,6 +102,11 @@
   background-color: rgb(90, 81, 68);
 }
 
+.scroll {
+  cursor: pointer;
+  color: rgb(0, 59, 96);
+}
+
 .nocalc {
   height: 5rem;
   width: 27rem;
