@@ -111,7 +111,7 @@ function renderNormalCalc() {
     }" id="cislo${i}">${ABECEDA[i]}</button>`;
   } // Dříve byl tento kód čitelný, teď má animace
   lastSOUSTAVA = SOUSTAVA;
-  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen_obal"><p class="screen"></p></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_carka">,</button><button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
+  kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen_obal"><p class="screen"></p></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_Del">Del</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_carka">,</button><button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
 
   const priklad_screen = document.querySelector(".screen");
   priklad_screen.innerHTML = priklad;
@@ -178,6 +178,13 @@ function renderNormalCalc() {
     priklad = "";
     priklad_screen.innerHTML = priklad;
   };
+  document.querySelector(".znamenko_Del").onclick = () => {
+    priklad.includes("=")
+      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+      : "";
+    priklad = priklad.slice(0, -1);
+    priklad_screen.innerHTML = priklad;
+  };
   const zmackl_carka = () => {
     priklad.includes("=")
       ? (priklad = priklad.slice(0, priklad.indexOf("=")))
@@ -226,6 +233,9 @@ function renderNormalCalc() {
         priklad = "";
         priklad_screen.innerHTML = priklad;
       case "Backspace":
+        priklad.includes("=")
+          ? (priklad = priklad.slice(0, priklad.indexOf("=")))
+          : "";
         priklad = priklad.slice(0, -1);
         priklad_screen.innerHTML = priklad;
       default:
