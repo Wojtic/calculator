@@ -86,7 +86,6 @@ function renderRandomCalc() {
       deset_do_n(cislo1, SOUSTAVA, ABECEDA) +
       ["+", "-", "*", "/"][Math.floor(Math.random() * 4)] +
       deset_do_n(cislo2, SOUSTAVA, ABECEDA);
-
     p_priklad.innerHTML = priklad;
   }
 
@@ -99,6 +98,7 @@ function renderRandomCalc() {
 }
 // --------------------------------------------------------------------- normální kalkulačka
 function renderNormalCalc() {
+  // ---------------------------------------------------------------------------- html setup
   let cisla = "";
   for (let i = 0; i < Math.max(lastSOUSTAVA, SOUSTAVA); i++) {
     cisla += `<button class="cislo ${
@@ -114,15 +114,18 @@ function renderNormalCalc() {
   lastSOUSTAVA = SOUSTAVA;
   kalkulacka_obal.innerHTML = `<div class="calculator_normal"> <div class="screen_obal"><p class="screen"></p></div> <div class="znamenka_vodorovne"> <button class="znamenko_plus">+</button> <button class="znamenko_minus">-</button> <button class="znamenko_krat">*</button> <button class="znamenko_deleno">/</button> </div> <div class="znamenka_svisle"> <button class="znamenko_C">C</button><button class="znamenko_Del">Del</button><button class="znamenko_zavorka_leva">(</button> <button class="znamenko_zavorka_prava">)</button> <button class="znamenko_carka">,</button><button class="znamenko_rovnase">=</button> </div> <div class="cisla">${cisla}</div> </div>`;
 
+  // ------------------------------------------------------------------------------- utils
+
   const priklad_screen = document.querySelector(".screen");
   priklad_screen.innerHTML = priklad;
 
-  const cisla_divy = document.querySelectorAll(".cislo");
-  cisla_divy.forEach((el) => {
+  const remove_equals = () => {
+    if (priklad.includes("=")) priklad = priklad.slice(0, priklad.indexOf("="));
+  };
+
+  document.querySelectorAll(".cislo").forEach((el) => {
     el.addEventListener("click", (event) => {
-      priklad.includes("=")
-        ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-        : "";
+      remove_equals();
       priklad += ABECEDA[event.target.id.slice(5)];
       priklad_screen.innerHTML = priklad;
     });
@@ -139,9 +142,7 @@ function renderNormalCalc() {
   if (lastABECEDA.length == ABECEDA.length && lastABECEDA != ABECEDA) {
     // Přepsat příklad, pokud se změnila abeceda
     for (let i = 0; i < priklad.length; i++) {
-      if ("+-*/.,()=".includes(priklad[i])) {
-        continue;
-      }
+      if ("+-*/.,()=".includes(priklad[i])) continue;
       if (lastABECEDA.indexOf(priklad[i]) != ABECEDA.indexOf(priklad[i])) {
         // Došlo ke změně
         priklad =
@@ -154,16 +155,12 @@ function renderNormalCalc() {
   }
   lastABECEDA = ABECEDA.slice(0); // Nemůžu napsat pouze = protože se objekt nezkopíruje ale jenom se na něj uloží "reference"
 
-  if (priklad.includes("=")) {
-    // přepočítá při napč. změně soustavy
-    change_equation_with_anim(evaluateExpression());
-  }
+  if (priklad.includes("=")) change_equation_with_anim(evaluateExpression()); // přepočítá při např. změně soustavy
 
+  // -------------------------------------------------------------------------------- buttons
   const zmen_priklad = (znak) => {
     // logika pro nahrazování znamének (např. na začátku nesmí být +*/),.
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
+    remove_equals();
     if (priklad.length == 0 && znak == "-") {
       priklad = "-";
     } else if (
@@ -177,9 +174,7 @@ function renderNormalCalc() {
     priklad_screen.innerHTML = priklad;
   };
   const zmackl_zavorka = (zavorka) => {
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
+    remove_equals();
     priklad += zavorka;
     priklad_screen.innerHTML = priklad;
   };
@@ -198,32 +193,23 @@ function renderNormalCalc() {
     priklad_screen.innerHTML = priklad;
   };
   document.querySelector(".znamenko_Del").onclick = () => {
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
+    remove_equals();
     priklad = priklad.slice(0, -1);
     priklad_screen.innerHTML = priklad;
   };
   const zmackl_carka = () => {
-    priklad.includes("=")
-      ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-      : "";
-    if (priklad.length > 0 && !"+-*/.,".includes(priklad[priklad.length - 1])) {
+    remove_equals();
+    if (priklad.length > 0 && !"+-*/.,".includes(priklad[priklad.length - 1]))
       priklad += ",";
-    } else if (priklad.length > 0) {
-      priklad = priklad.slice(0, -1) + ",";
-    }
+    else if (priklad.length > 0) priklad = priklad.slice(0, -1) + ",";
     priklad_screen.innerHTML = priklad;
   };
   document.querySelector(".znamenko_carka").onclick = zmackl_carka;
 
+  // ------------------------------------------------------------------------ klávesnice
   document.addEventListener("keydown", (event) => {
-    if (kalkulacka != "normal") {
+    if (kalkulacka != "normal" || event.target.tagName.toLowerCase() == "input")
       return;
-    }
-    if (event.target.tagName.toLowerCase() == "input") {
-      return;
-    }
 
     switch (event.code) {
       case "NumpadAdd":
@@ -252,19 +238,13 @@ function renderNormalCalc() {
         priklad = "";
         priklad_screen.innerHTML = priklad;
       case "Backspace":
-        priklad.includes("=")
-          ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-          : "";
+        remove_equals();
         priklad = priklad.slice(0, -1);
         priklad_screen.innerHTML = priklad;
       default:
         if ("0123456789".includes(event.code[6])) {
-          if (event.code[6] > SOUSTAVA - 1) {
-            break;
-          }
-          priklad.includes("=")
-            ? (priklad = priklad.slice(0, priklad.indexOf("=")))
-            : "";
+          if (event.code[6] > SOUSTAVA - 1) break;
+          remove_equals();
           priklad += ABECEDA[event.code[6]];
           priklad_screen.innerHTML = priklad;
         }
