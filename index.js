@@ -9,6 +9,7 @@ const vstupy = document.querySelectorAll(".abc input");
 const kalkulacka_obal = document.querySelector(".calculator_inside");
 // ---------------------------------------------------------------- obecné
 let lastSOUSTAVA = 0; // pro animace
+let lastABECEDA = []; // pro přepisování příkladu při změně abecedy
 const CISLOMAXHODNOTA = 10000;
 let ABECEDA = [];
 let priklad = "";
@@ -134,6 +135,24 @@ function renderNormalCalc() {
       priklad_screen.classList.remove("animate__animated", "animate__tada");
     });
   };
+
+  if (lastABECEDA.length == ABECEDA.length && lastABECEDA != ABECEDA) {
+    // Přepsat příklad, pokud se změnila abeceda
+    for (let i = 0; i < priklad.length; i++) {
+      if ("+-*/.,()=".includes(priklad[i])) {
+        continue;
+      }
+      if (lastABECEDA.indexOf(priklad[i]) != ABECEDA.indexOf(priklad[i])) {
+        // Došlo ke změně
+        priklad =
+          priklad.substring(0, i) +
+          ABECEDA[lastABECEDA.indexOf(priklad[i])] +
+          priklad.substring(i + 1);
+      }
+    }
+    priklad_screen.innerHTML = priklad;
+  }
+  lastABECEDA = ABECEDA.slice(0); // Nemůžu napsat pouze = protože se objekt nezkopíruje ale jenom se na něj uloží "reference"
 
   if (priklad.includes("=")) {
     // přepočítá při napč. změně soustavy
