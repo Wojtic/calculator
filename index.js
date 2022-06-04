@@ -66,7 +66,7 @@ function evaluateExpression() {
         (nasobek42 < 0
           ? `(${deset_do_n(nasobek42, SOUSTAVA, ABECEDA)})`
           : deset_do_n(nasobek42, SOUSTAVA, ABECEDA)) +
-        (vysledek % 42 > 0 ? "+" : "") +
+        (vysledek % 42 >= 0 ? "+" : "") +
         deset_do_n(vysledek % 42, SOUSTAVA, ABECEDA)
       : deset_do_n(vysledek, SOUSTAVA, ABECEDA)); // U záproných čísel se chová zvláštně
   return priklad;
