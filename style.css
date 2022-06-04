@@ -126,6 +126,53 @@
   animation-timing-function: linear;
 }
 
+.calculator_random {
+  width: 20rem;
+  height: 10rem;
+  margin: 0 auto;
+  border: 2px solid black;
+  border-radius: 2rem;
+  background-color: rgb(172, 172, 172);
+  font-family: "Open Sans", sans-serif;
+}
+
+.random_nadpis {
+  text-align: center;
+  font-size: large;
+}
+
+.random_priklad {
+  text-align: center;
+}
+
+.calculator_random button {
+  width: 7rem;
+  height: 2rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.random_wrong {
+  float: left;
+  margin-left: 2.5rem;
+  background-color: rgb(227, 43, 43);
+}
+
+.random_wrong:hover {
+  background-color: rgb(192, 0, 0);
+}
+
+.random_right {
+  float: right;
+  margin-right: 2.5rem;
+  background-color: rgb(10, 200, 10);
+}
+
+.random_right:hover {
+  background-color: rgb(1, 163, 1);
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
