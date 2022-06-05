@@ -50,7 +50,8 @@ body {
 }
 
 .abc_nastaveni select:hover,
-.abc_nastaveni button:hover {
+.abc_nastaveni button:hover,
+.calc_mode_select:hover {
   background-color: rgb(172, 16, 16);
   cursor: pointer;
 }
@@ -83,6 +84,49 @@ body {
 .sloupek input {
   width: 0.8rem;
   background-color: rgb(255, 240, 240);
+}
+
+.calculator_settings {
+  width: 100vw;
+  height: 3rem;
+  background-color: rgb(247, 220, 220);
+  border-bottom: 3px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator_settings label {
+  margin: 0 0.2rem 0 2rem;
+  font-size: large;
+  color: rgb(42, 0, 0);
+}
+
+.calculator_inside {
+  margin-top: 5rem;
+}
+
+.calc_mode_select {
+  height: 1.4rem;
+  width: 6rem;
+  background-color: rgb(236, 139, 139);
+  border: 1px solid rgb(185, 55, 55);
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.inpt_soustava {
+  width: 3rem;
+  height: 1.4rem;
+  font-size: large;
+  background-color: rgb(236, 139, 139);
+  border: 1px solid rgb(185, 55, 55);
+  border-radius: 0.5rem;
+}
+
+.check_42 {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .calculator_normal {
